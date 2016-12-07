@@ -1,6 +1,6 @@
 var restify = require('restify');
 var builder = require('botbuilder');
-var Wunderground = require('wundergroundnode'); //is this redundant? 
+var Wunderground = require('wundergroundnode');
 var http = require('http');
 
 var wundergroundKey = process.env.WUNDERGROUND || "Missing wunderground API key";
@@ -19,10 +19,9 @@ var connector = new builder.ChatConnector({
 var bot = new builder.UniversalBot(connector);
 
 bot.dialog('/', new builder.IntentDialog()    
-        //root ‘/’ dialog responds to any message.
 .matches('^weather', builder.DialogAction.beginDialog('/weather'))
-        // The CommandDialog lets you add a RegEx that, when matched, 
-        //will invoke a Dialog Handler.
+    // The IntentDialog lets you add a RegEx that, when matched, 
+    //will invoke a Dialog Handler.
 .onDefault([
     //The first step of the root ‘/’ dialog checks to see if we know 
     //the user's location, and if not, it redirects them to the ‘/weather’ dialog
@@ -31,8 +30,8 @@ bot.dialog('/', new builder.IntentDialog()
     {
         if (!session.userData.location) { session.beginDialog('/weather'); }
         else { next(); }    
-                //You can persist data for a user globally by assigning values 
-                //to the session.userData object, like we've done here for location.
+            //You can persist data for a user globally by assigning values 
+            //to the session.userData object, like we've done here for location.
     },
     function (session, results) 
     {
@@ -56,31 +55,26 @@ bot.dialog('/weather', [
     function (session, results)     //WeatherUnderground API 
     {
         try 
-        {           //Try to read in a string of "weather City, ST"
+        {   //Try to read in a string of "weather City, ST"
             var txt = session.message.text;
-                            //convert "Weather" to "weather", then delete it
+            //convert "Weather" to "weather", then delete it
             txt = txt.toLowerCase().replace('weather ', '');
-                            //split City, State by ‘,’ and replace spaces with _ 
+            //split City, State by ‘,’ and replace spaces with _ 
             var city = txt.split(',')[0].trim().replace(' ', '_');
-                            //assign state variable to the back half of the string 
+            //assign state variable to the back half of the string 
             var state = txt.split(',')[1].trim();
-                 
-                    //log City, ST to the console for debugging 
+            //log City, ST to the console for debugging 
             console.log(city + ', ' + state);
-                            //set user's global location to City, ST 
+            //set user's global location to City, ST 
             session.userData.location = (city + ', ' + state.toUpperCase());
 
-//Need "var wundergroundKey = 'your Wunderground API key here';" up top,
-//and "npm install --save wundergroundnode"
-
-                    //Try to parse the City and State into a URL string
+            //Try to parse the City and State into a URL string
             var url = '/api/' + wundergroundKey + '/conditions/q/state/city.json'
             url = url.replace('state', state);
             url = url.replace('city', city);
-                    //log "/.../ST/City.json" to the console for debugging 
             console.log('/.../' + state.toUpperCase() + '/' + city + '.json');
 
-//Need to have "var http = require('http');" up top, and "npm install --save http"
+           //Need to have "var http = require('http');" up top, and "npm install --save http"
             http.get(
                 {
                     host: 'api.wunderground.com',
@@ -96,7 +90,7 @@ bot.dialog('/weather', [
                             + data.current_observation.temp_f + " degrees F.   "
                             + data.current_observation.observation_time);
                     });
-                }) //https://lostechies.com/andrewsiemer/2016/04/14/building-a-slack-bot-with-botkit-node-and-docker/
+                })
         } //End of try 
         catch (e) 
         { session.send("Whoops, that didn't match! Try again."); }
@@ -113,26 +107,6 @@ bot.dialog('/weather', [
 //are processed when they call session.endDialog().
 //Control will ONLY be returned back to the root dialog with a call to endDialog().
 
-
-//example of OpenWeatherMap code:
-// exports.weather = function(cb) 
-// {
-//   if (this.message.names) 
-//   {
-//     var location = this.message.names[0]
-//     https.get("https://api.openweathermap.org/data/2.5/find?q=" + location + "&units=imperial" + "&lang=en" + "&mode=json", function(res)
-// 	{
-// 		console.log('statusCode: ', res.statusCode);
-// 		console.log('headers: ', res.headers);
-// 		res.on('data', function (d) {
-// 			process.stdout.write(d);
-// 		});
-// 	}).on('error', function (e) {
-// 		console.error(e);
-// 	});  
-//   }
-// } 
-
 // Setup Restify Server for a bare-bones web service.
 var server = restify.createServer();
 server.get('/', restify.serveStatic({
@@ -144,9 +118,3 @@ server.listen(process.env.PORT || 3000, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
 
-//bot.listen() listens to a route off the Restify server.
-//bot.listenStdin() begins monitoring console input (from the command line).
-
-// For security reasons it is recommended that you lock your server down 
-// to only receive requests from the Bot Connector Service, 
-// so we can call verifyBotFramework() to install a piece of middleware that does that.
