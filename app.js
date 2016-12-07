@@ -110,7 +110,7 @@ bot.dialog('/weather', [
 // Setup Restify Server for a bare-bones web service.
 var server = restify.createServer();
 server.get(/\/?.*/, restify.serveStatic({
-    directory: __dirname,
+    directory: __dirname + '/static/',
     default: 'index.html',
     match: /^((?!app.js).)*$/   // we should deny access to the application source
 }));
