@@ -116,6 +116,7 @@ server.get(/\/?.*/, restify.serveStatic({
 }));
 server.post('/api/messages', connector.listen());
 server.listen(process.env.PORT || 3000, function () {
+    console.log('%s __dirname to %s', server.name, __dirname);
     console.log('%s listening to %s', server.name, server.url);
 });
 
