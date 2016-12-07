@@ -3,13 +3,8 @@ var builder = require('botbuilder');
 var Wunderground = require('wundergroundnode'); //is this redundant? 
 var http = require('http');
 
-//var https = require('https');
-//var Weather  = require('openweathermap'); 
-//var weatherKey = process.env.WEATHER_KEY || "Missing weather API key"; 
-
 var wundergroundKey = process.env.WUNDERGROUND || "Missing wunderground API key";
 var wunderground = new Wunderground(wundergroundKey);
-    //is this redundant? 
 
 var myAppId = process.env.MY_APP_ID || "Missing your app ID";
 var myAppSecret = process.env.MY_APP_SECRET || "Missing your app secret";
@@ -23,7 +18,7 @@ var connector = new builder.ChatConnector({
 //Create bot and add dialogs
 var bot = new builder.UniversalBot(connector);
 
-bot.dialog('/', new builder.CommandDialog()    
+bot.dialog('/', new builder.IntentDialog()    
         //root ‘/’ dialog responds to any message.
 .matches('^weather', builder.DialogAction.beginDialog('/weather'))
         // The CommandDialog lets you add a RegEx that, when matched, 
@@ -43,7 +38,7 @@ bot.dialog('/', new builder.CommandDialog()
     {
         session.send('Hello from %s', session.userData.location + "!");
     }
-])); //End of bot.add() root ‘/’ dialog and .onDefault();
+]));
 
 bot.dialog('/weather', [
     function (session, args, next) 
