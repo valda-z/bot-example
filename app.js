@@ -111,8 +111,7 @@ bot.dialog('/weather', [
 var server = restify.createServer();
 server.get(/\/?.*/, restify.serveStatic({
     directory: __dirname + '/static',
-    default: 'index.html',
-    match: /^((?!app.js).)*$/   // we should deny access to the application source
+    default: 'index.html'
 }));
 server.post('/api/messages', connector.listen());
 server.listen(process.env.PORT || 3000, function () {
