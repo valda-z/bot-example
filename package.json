@@ -1,0 +1,27 @@
+{
+  "name": "bot-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valda-z/bot-example.git"
+  },
+  "keywords": [
+    "bot",
+    "weather"
+  ],
+  "author": "valda-z",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/valda-z/bot-example/issues"
+  },
+  "homepage": "https://github.com/valda-z/bot-example#readme",
+  "dependencies": {
+    "botbuilder": "^3.4.4",
+    "restify": "^4.3.0"
+  }
+}
