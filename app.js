@@ -14,15 +14,16 @@ var wunderground = new Wunderground(wundergroundKey);
 var myAppId = process.env.MY_APP_ID || "Missing your app ID";
 var myAppSecret = process.env.MY_APP_SECRET || "Missing your app secret";
 
-////Hello World code
-// var bot = new builder.BotConnectorBot({appId: myAppId, appSecret: myAppSecret });
-// bot.add('/', new builder.SimpleDialog(function(session){session.send('Hello World'); })); 
+// Create chat bot
+var connector = new builder.ChatConnector({
+    appId: process.env.MY_APP_ID,
+    appPassword: process.env.MY_APP_SECRET
+});
 
 //Create bot and add dialogs
-var bot = new builder.BotConnectorBot({ appId: myAppId, appSecret: myAppSecret });
-        // created a new BotConnetcorBot (as opposed to a TextBot).
+var bot = new builder.UniversalBot(connector);
 
-bot.add('/', new builder.CommandDialog()    
+bot.dialog('/', new builder.CommandDialog()    
         //root ‘/’ dialog responds to any message.
 .matches('^weather', builder.DialogAction.beginDialog('/weather'))
         // The CommandDialog lets you add a RegEx that, when matched, 
@@ -44,7 +45,7 @@ bot.add('/', new builder.CommandDialog()
     }
 ])); //End of bot.add() root ‘/’ dialog and .onDefault();
 
-bot.add('/weather', [
+bot.dialog('/weather', [
     function (session, args, next) 
     {
         if (session.userData.location) 
@@ -139,13 +140,12 @@ bot.add('/weather', [
 
 // Setup Restify Server for a bare-bones web service.
 var server = restify.createServer();
-server.use(bot.verifyBotFramework({ appId: myAppId, appSecret: myAppSecret }));
 server.get('/', restify.serveStatic({
     directory: __dirname,
     default: '/index.html'
 }));
-server.post('/api/messages', bot.verifyBotFramework(), bot.listen());
-server.listen(process.env.port || 3000, function () {
+server.post('/api/messages', connector.listen());
+server.listen(process.env.PORT || 3000, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
 
