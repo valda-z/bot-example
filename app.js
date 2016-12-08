@@ -113,6 +113,10 @@ server.get('/', restify.serveStatic({
     directory: __dirname,
     default: '/index.html'
 }));
+server.get('/img.svg', restify.serveStatic({
+    directory: __dirname,
+    default: '/img.svg'
+}));
 server.post('/api/messages', connector.listen());
 server.listen(process.env.PORT || 3000, function () {
     console.log('%s __dirname to %s', server.name, __dirname);
