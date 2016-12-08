@@ -110,7 +110,7 @@ bot.dialog('/weather', [
 // Setup Restify Server for a bare-bones web service.
 var server = restify.createServer();
 server.get(/\/?.*/, restify.serveStatic({
-    directory: __dirname + '/static',
+    directory: process.env.MY_APP_STATISHTML,
     default: 'index.html'
 }));
 server.post('/api/messages', connector.listen());
