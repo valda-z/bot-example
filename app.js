@@ -19,7 +19,7 @@ var connector = new builder.ChatConnector({
 var bot = new builder.UniversalBot(connector);
 
 bot.dialog('/', new builder.IntentDialog()    
-.matches('^weather', builder.DialogAction.beginDialog('/weather'))
+.matches('/^weather/i', builder.DialogAction.beginDialog('/weather'))
     // The IntentDialog lets you add a RegEx that, when matched, 
     //will invoke a Dialog Handler.
 .onDefault([
@@ -35,7 +35,9 @@ bot.dialog('/', new builder.IntentDialog()
     },
     function (session, results) 
     {
-        session.send('Hello from %s', session.userData.location + "!");
+        if (session.userData.location != null) {
+            session.send('Hello from %s', session.userData.location + "!");
+        }
     }
 ]));
 
@@ -95,6 +97,7 @@ bot.dialog('/weather', [
         catch (e) 
         { session.send("Whoops, that didn't match! Try again."); }
         session.endDialog();
+        session.userData.location = null;
     } //End of WeatherUnderground API function 
 ]); //End of ‘/weather’ dialog waterfall 
 
