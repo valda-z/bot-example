@@ -111,7 +111,7 @@ bot.dialog('/weather', [
 var server = restify.createServer();
 server.get('/', restify.serveStatic({
     directory: __dirname,
-    default: 'index.html'
+    default: '/index.html'
 }));
 server.post('/api/messages', connector.listen());
 server.listen(process.env.PORT || 3000, function () {
