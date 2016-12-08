@@ -46,13 +46,8 @@ bot.dialog('/', new builder.IntentDialog()
 bot.dialog('/weather', [
     function (session, args, next) 
     {
-        if (session.userData.location) 
-        { builder.Prompts.text(session, "Is that a new city? Hang on, let me go check..."); } 
-        else 
-        {
-            builder.Prompts.text(session, "Hello. I can tell you about any city " +
+        builder.Prompts.text(session, "Hello. I can tell you about any city " +
             "if you type it like 'weather London, UK'.");
-        }
         //check to see if user is requesting a new location.
         if (session.userData.location) { next(); }
     },
@@ -91,13 +86,14 @@ bot.dialog('/weather', [
                         var conditions = data.current_observation.weather;
                         session.send("'" + conditions + "' in "
                             + city + " right now, and the temperature is "
-                            + data.current_observation.temp_f + " degrees F.   "
+                            + data.current_observation.temp_c + " degrees C.   "
                             + data.current_observation.observation_time);
                     });
                 })
         } //End of try 
         catch (e) 
         { session.send("Whoops, that didn't match! Try again."); }
+        session.send("Let's try another city ...");
         session.endDialog();
     } //End of WeatherUnderground API function 
 ]); //End of ‘/weather’ dialog waterfall 
