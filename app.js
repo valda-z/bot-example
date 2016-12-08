@@ -94,7 +94,7 @@ bot.dialog('/weather', [
         } //End of try 
         catch (e) 
         { session.send("Whoops, that didn't match! Try again."); }
-        session.send("Let's try another city ...");
+
         session.endDialog();
     } //End of WeatherUnderground API function 
 ]); //End of ‘/weather’ dialog waterfall 
