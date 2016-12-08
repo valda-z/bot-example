@@ -53,6 +53,7 @@ bot.dialog('/weather', [
     },
     function (session, results)     //WeatherUnderground API 
     {
+        session.send("Requesting city weather conditions ...");
         try 
         {   //Try to read in a string of "weather City, ST"
             var txt = session.message.text;
