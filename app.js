@@ -46,16 +46,16 @@ intents.onDefault([
         }
     },
     function (session, results) {
-        session.send("Hello from city %s", session.userData.location + "!");
-        session.send("  if you want to see weather forecast enter 'forecast'");
-        session.send("  if you want to change city enter 'change'");
+        session.send("### Hello from city %s", session.userData.location + "! \n\n" +
+            "  if you want to see weather forecast enter **forecast** \n\n" +
+            "  if you want to change city enter **change**");
     }
 ]);
 
 bot.dialog('/weather', [
     function (session) {
         builder.Prompts.text(session, "Hello. I can tell you about any city " +
-                "if you type it like 'London, UK'.");
+                "if you type it like **London, UK**.");
     },
     function (session, results) {
         session.userData.location = results.response;
@@ -97,9 +97,13 @@ function weather(session) {
                 response.on('end', function () {
                     var data = JSON.parse(body);
                     var conditions = data.current_observation.weather;
-                    session.send("'" + conditions + "' in "
-                        + city + " right now, and the temperature is "
-                        + data.current_observation.temp_c + " degrees C.   "
+                    session.send(""
+                        + "!["
+                        + conditions + "]("
+                        + data.current_observation.icon_url 
+                        + ") in **"
+                        + city + "** right now, and the temperature is **"
+                        + data.current_observation.temp_c + "** degrees C.   "
                         + data.current_observation.observation_time);
                 });
             })
