@@ -95,6 +95,7 @@ function weather(session) {
                 var body = '';
                 response.on('data', function (d) { body += d; })
                 response.on('end', function () {
+                    try {
                     var data = JSON.parse(body);
                     var conditions = data.current_observation.weather;
                     session.send(""
@@ -105,6 +106,13 @@ function weather(session) {
                         + city + "** right now, and the temperature is **"
                         + data.current_observation.temp_c + "** degrees C.   "
                         + data.current_observation.observation_time);
+                    } //End of try 
+                    catch (e)
+                    {
+                        session.send("Whoops, that didn't match! Try again.");
+                        session.endDialog();
+                        session.beginDialog('/weather');
+                    }
                 });
             })
     } //End of try 
