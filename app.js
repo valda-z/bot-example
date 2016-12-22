@@ -7,6 +7,7 @@ var wundergroundKey = process.env.WUNDERGROUND || "Missing wunderground API key"
 
 var myAppId = process.env.MY_APP_ID || "Missing your app ID";
 var myAppSecret = process.env.MY_APP_SECRET || "Missing your app secret";
+var myWebUrl = process.env.MY_APP_SECRET || "http://localhost:3000";
 
 // Create chat bot
 var connector = new builder.ChatConnector({
@@ -143,7 +144,7 @@ function weather_radar(session) {
                         console.log("image ok");
                         //arrimg[state + city] = data;
                         session.send("radar map: \n\n"
-                            + "![img](http://localhost:3000/img?id=" + state + city + ") ");
+                            + "![img]("+myWebUrl+"/img?id=" + state + city + ") ");
 
                         arrimg[state + city] = Buffer.concat(bufs); // Create a buffer from all the received chunks
 
