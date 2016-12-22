@@ -7,7 +7,7 @@ var wundergroundKey = process.env.WUNDERGROUND || "Missing wunderground API key"
 
 var myAppId = process.env.MY_APP_ID || "Missing your app ID";
 var myAppSecret = process.env.MY_APP_SECRET || "Missing your app secret";
-var myWebUrl = process.env.MY_APP_SECRET || "http://localhost:3000";
+var myWebUrl = process.env.MY_APP_URL || "http://localhost:3000";
 
 // Create chat bot
 var connector = new builder.ChatConnector({
