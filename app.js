@@ -77,7 +77,7 @@ intents.onDefault([
         } else {
             builder.Prompts.choice(session, "Hello from city " + session.userData.location + "! \n\n" +
                 "What you want to do now?"
-                ,["change", "forecast", "radar map", "end dialog"]);
+                ,["change", "forecast", "radar map", "end dialog"], {listStyle: builder.ListStyle.button});
             next();
         }
     },
