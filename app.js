@@ -77,12 +77,7 @@ intents.onDefault([
         } else {
             builder.Prompts.choice(session, "Hello from city " + session.userData.location + "! \n\n" +
                 "What you want to do now?"
-                , {
-                    "change": "Change city",
-                    "forecast": "Show forecast",
-                    "radar map": "Show radar map",
-                    "end": "end dialog",
-                });
+                ,["change", "forecast", "radar map", "end dialog"]);
             next();
         }
     },
@@ -110,7 +105,7 @@ function weather_radar(session) {
         var txt = session.userData.location;
         //convert "Weather" to "weather", then delete it
         txt = txt.toLowerCase();
-        //split City, State by ‘,’ and replace spaces with _ 
+        //split City, State by ï¿½,ï¿½ and replace spaces with _ 
         var city = txt.split(',')[0].trim().replace(' ', '_');
         //assign state variable to the back half of the string 
         var state = txt.split(',')[1].trim();
@@ -181,7 +176,7 @@ function weather(session) {
         var txt = session.userData.location;
         //convert "Weather" to "weather", then delete it
         txt = txt.toLowerCase();
-        //split City, State by ‘,’ and replace spaces with _ 
+        //split City, State by ï¿½,ï¿½ and replace spaces with _ 
         var city = txt.split(',')[0].trim().replace(' ', '_');
         //assign state variable to the back half of the string 
         var state = txt.split(',')[1].trim();
