@@ -138,13 +138,18 @@ function weather_radar(session) {
                     if (!error && response.statusCode == 200) {
                         console.log("image ok");
                         //arrimg[state + city] = data;
-                        session.send("radar map: \n\n"
-                            + "![img]("+myWebUrl+"/img?id=" + state + city + ") ");
+
+                        var message = new builder.Message(session);
 
                         arrimg[state + city] = Buffer.concat(bufs); // Create a buffer from all the received chunks
 
-                        //session.send("radar map: \n\n"
-                        //    + "![img]("+url+") ");
+                        var att = new builder.HeroCard(session)
+                                .images([
+                                    builder.CardImage.create(session, myWebUrl+"/img?id=" + state + city)
+                                ]);
+
+                        message.addAttachment(att);
+                        session.send(message)
                     } else {
                         console.log("image download error.");
                         session.send("Whoops, that didn't match! Try again.");
