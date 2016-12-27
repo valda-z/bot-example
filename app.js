@@ -147,12 +147,10 @@ function weather_radar(session) {
 
                         arrimg[state + city] = Buffer.concat(bufs); // Create a buffer from all the received chunks
 
-                        var att = new builder.HeroCard(session)
-                                .images([
-                                    builder.CardImage.create(session, myWebUrl+"/img?id=" + state + city)
-                                ]);
-
-                        message.addAttachment(att);
+                        message.attachments([{
+                                contentType: "image/gif",
+                                contentUrl:  myWebUrl+"/img?id=" + state + city
+                            }]);
                         session.send(message)
                     } else {
                         console.log("image download error.");
