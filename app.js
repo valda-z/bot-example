@@ -269,7 +269,7 @@ server.post('/api/messages', connector.listen());
 server.get('/img', function (req, res) {
     console.log("### get image " + url.parse(req.url, true).query.id);
     //console.log("### arr len: " + arrimg[url.parse(req.url, true).query.id]);
-    //res.writeHead(200, { 'Content-Type': 'image/gif' });
+    res.writeHead(200, { 'Content-Type': 'image/gif' });
     res.end(arrimg[url.parse(req.url, true).query.id], 'binary');
 })
 server.listen(process.env.PORT || 3000, function () {
