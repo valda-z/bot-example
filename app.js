@@ -15,6 +15,10 @@ var connector = new builder.ChatConnector({
     appPassword: process.env.MY_APP_SECRET
 });
 
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 var arrimg = {};
 
 //Create bot and add dialogs
@@ -210,14 +214,22 @@ function weather(session) {
                     try {
                         var data = JSON.parse(body);
                         var conditions = data.current_observation.weather;
-                        session.send(""
-                            + "!["
-                            + conditions + "]("
-                            + data.current_observation.icon_url
-                            + ") in **"
-                            + city + "** right now, and the temperature is **"
-                            + data.current_observation.temp_c + "** degrees C.   "
-                            + data.current_observation.observation_time);
+
+                        var message = new builder.Message(session);
+                        var att = new builder.ThumbnailCard(session)
+                                .images([
+                                    builder.CardImage.create(session, data.current_observation.icon_url)
+                                ]).
+                                title("" + city.capitalizeFirstLetter() + ", " + state.toUpperCase() + " temperature: " + data.current_observation.temp_c + " °C")
+                                .subtitle(""
+                                        + conditions + " in "
+                                        + city + " right now, and the temperature is "
+                                        + data.current_observation.temp_c + " degrees C.   "
+                                        + data.current_observation.observation_time);
+
+                        message.addAttachment(att);
+                        session.send(message)
+
                     } //End of try 
                     catch (e) {
                         session.send("Whoops, that didn't match! Try again.");
