@@ -27,6 +27,17 @@ var bot = new builder.UniversalBot(connector);
 var intents = new builder.IntentDialog();
 bot.dialog('/', intents);
 
+intents.matches(/,/i, [
+    function (session) {
+        console.log("### " + session.message.text);
+        session.userData.location = session.message.text;
+        session.send("Changing city to **%s**", session.userData.location);
+        weather(session);
+    },
+    function (session, results) {
+    }
+]);
+
 intents.matches(/^change/i, [
     function (session) {
         session.beginDialog('/weather');
